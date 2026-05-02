@@ -1,0 +1,22 @@
+{
+  "name": "notification_app_be",
+  "version": "1.0.0",
+  "description": "Campus Notifications System - Backend API (RA2311003010914)",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "author": "Mohammad Hamza Khan <mk8690@srmist.edu.in>",
+  "license": "ISC"
+}

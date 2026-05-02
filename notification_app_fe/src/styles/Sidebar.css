@@ -1,0 +1,198 @@
+/* ============================================================
+   Sidebar Component Styles
+   ============================================================ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform var(--transition-base);
+}
+
+/* Brand / Logo area */
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  min-height: var(--topbar-height);
+}
+
+.sidebar__logo {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: var(--shadow-glow);
+  flex-shrink: 0;
+}
+
+.sidebar__title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.sidebar__subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+/* Navigation */
+.sidebar__nav {
+  flex: 1;
+  padding: var(--space-4) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  overflow-y: auto;
+}
+
+.sidebar__section-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--color-text-muted);
+  padding: var(--space-3) var(--space-3) var(--space-2);
+}
+
+.sidebar__nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  border: 1px solid transparent;
+  background: none;
+  text-align: left;
+  width: 100%;
+}
+
+.sidebar__nav-item:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface-2);
+  border-color: var(--color-border);
+}
+
+.sidebar__nav-item.active {
+  color: var(--color-primary-light);
+  background: var(--color-primary-glow);
+  border-color: rgba(108, 99, 255, 0.2);
+}
+
+.sidebar__nav-item.active .sidebar__nav-icon {
+  filter: drop-shadow(0 0 6px var(--color-primary));
+}
+
+.sidebar__nav-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sidebar__nav-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  margin-left: auto;
+  animation: pulse-dot 2s infinite;
+}
+
+/* Type filters inside sidebar */
+.sidebar__filter-section {
+  margin-top: var(--space-2);
+}
+
+.sidebar__type-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+  background: none;
+  text-align: left;
+  width: 100%;
+  color: var(--color-text-secondary);
+}
+
+.sidebar__type-btn:hover,
+.sidebar__type-btn.active {
+  background: var(--color-surface-2);
+  color: var(--color-text-primary);
+}
+
+.sidebar__type-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* Footer */
+.sidebar__footer {
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.sidebar__footer-name {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+/* Mobile overlay */
+.sidebar__overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar__overlay {
+    display: block;
+  }
+}

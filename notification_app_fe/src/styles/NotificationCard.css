@@ -1,0 +1,181 @@
+/* ============================================================
+   Notification Card Component Styles
+   ============================================================ */
+
+.notification-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  transition: all var(--transition-base);
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.35s both;
+}
+
+.notification-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--type-color, var(--color-primary));
+  border-radius: 0 2px 2px 0;
+}
+
+.notification-card:hover {
+  border-color: var(--color-border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* New (unviewed) notification glow */
+.notification-card.is-new {
+  border-color: rgba(108, 99, 255, 0.2);
+  background: linear-gradient(
+    135deg,
+    var(--color-surface) 0%,
+    rgba(108, 99, 255, 0.04) 100%
+  );
+}
+
+/* ─── Card Header ──────────────────────────────── */
+.card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.card__badges {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.card__type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--badge-border, transparent);
+  background: var(--badge-bg, var(--color-surface-2));
+  color: var(--badge-color, var(--color-text-secondary));
+}
+
+/* Placement */
+.card__type-badge--placement {
+  --badge-bg: var(--color-placement-bg);
+  --badge-color: var(--color-placement);
+  --badge-border: var(--color-placement-border);
+}
+
+/* Event */
+.card__type-badge--event {
+  --badge-bg: var(--color-event-bg);
+  --badge-color: var(--color-event);
+  --badge-border: var(--color-event-border);
+}
+
+/* Result */
+.card__type-badge--result {
+  --badge-bg: var(--color-result-bg);
+  --badge-color: var(--color-result);
+  --badge-border: var(--color-result-border);
+}
+
+/* Other */
+.card__type-badge--other {
+  --badge-bg: var(--color-other-bg);
+  --badge-color: var(--color-other);
+  --badge-border: var(--color-other-border);
+}
+
+.card__new-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  background: var(--color-primary-glow);
+  color: var(--color-primary-light);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+}
+
+.card__new-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary-light);
+  border-radius: var(--radius-full);
+  animation: pulse-dot 1.5s infinite;
+}
+
+.card__priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.card__priority-badge--high {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--color-placement);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+.card__priority-badge--medium {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--color-event);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+.card__priority-badge--low {
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+/* ─── Timestamp ──────────────────────────────── */
+.card__timestamp {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ─── Message ────────────────────────────────── */
+.card__message {
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  line-height: 1.65;
+  margin-bottom: var(--space-3);
+}
+
+/* ─── Footer ─────────────────────────────────── */
+.card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.card__id {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-family: "Courier New", monospace;
+}
