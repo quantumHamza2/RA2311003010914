@@ -1,3 +1,4 @@
+const { newestFirst } = require("../services/notificationOrdering");
 /**
  * Notification Routes
  * Defines all API endpoints for the campus notification system.
@@ -114,11 +115,7 @@ router.get("/all", async (req, res, next) => {
 
     // Optional sort by latest
     if (req.query.sort === "latest") {
-      notifications = notifications.sort(
-        (a, b) =>
-          new Date(b.Timestamp.replace(" ", "T")) -
-          new Date(a.Timestamp.replace(" ", "T"))
-      );
+      notifications = [...notifications].sort(newestFirst);
     }
 
     res.json({
