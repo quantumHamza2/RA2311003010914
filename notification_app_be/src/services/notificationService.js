@@ -21,20 +21,7 @@ const EXTERNAL_API_URL = `${process.env.EXTERNAL_API_BASE_URL}/notifications`;
  * Event     → 2 (medium)
  * Others    → 3 (lowest)
  */
-const PRIORITY_MAP = {
-  placement: 1,
-  event: 2,
-};
-
-/**
- * Returns the numeric priority of a notification type.
- * @param {string} type - Notification type string (case insensitive)
- * @returns {number} Priority rank (1 = highest, 3 = lowest)
- */
-function getPriority(type = "") {
-  const normalized = type.toLowerCase();
-  return PRIORITY_MAP[normalized] ?? 3; // default = 3 (lowest)
-}
+const { normalizeType, getPriority, newestFirst } = require("./notificationOrdering");
 
 // ─────────────────────────────────────────────
 //  Core Fetch Function
@@ -56,7 +43,7 @@ async function getAuthToken() {
   };
 
   try {
-    const response = await axios.post(authUrl, payload);
+    const response = await axios.post(authUrl, payload, { timeout: 10000 });
     if (response.data && response.data.access_token) {
       currentToken = response.data.access_token;
       return currentToken;
@@ -97,7 +84,7 @@ async function fetchAllNotifications(isRetry = false) {
     }
 
     console.log(`[NotificationService] Fetched ${notifications.length} notifications.`);
-    return notifications;
+    return notifications.filter(n => n && typeof n === "object" && !Array.isArray(n));
   } catch (error) {
     // If we get a 401 Unauthorized, token might be expired. Retry once.
     if (error.response && error.response.status === 401 && !isRetry) {
@@ -114,16 +101,6 @@ async function fetchAllNotifications(isRetry = false) {
 // ─────────────────────────────────────────────
 
 /**
- * Parses a timestamp string to a Date object for comparison.
- * @param {string} timestamp - "YYYY-MM-DD HH:mm:ss" format
- * @returns {Date}
- */
-function parseTimestamp(timestamp) {
-  // Replace space with 'T' to make it ISO-compatible
-  return new Date(timestamp.replace(" ", "T"));
-}
-
-/**
  * GET /notifications/priority
  *
  * Fetches all notifications, applies priority ranking:
@@ -136,7 +113,7 @@ function parseTimestamp(timestamp) {
 async function getPriorityNotifications() {
   const notifications = await fetchAllNotifications();
 
-  const sorted = notifications.sort((a, b) => {
+  const sorted = [...notifications].sort((a, b) => {
     const priorityA = getPriority(a.Type);
     const priorityB = getPriority(b.Type);
 
@@ -146,7 +123,7 @@ async function getPriorityNotifications() {
     }
 
     // If same priority, sort by timestamp descending (latest first)
-    return parseTimestamp(b.Timestamp) - parseTimestamp(a.Timestamp);
+    return newestFirst(a, b);
   });
 
   // Enrich each notification with its priority label and rank
@@ -172,8 +149,8 @@ async function getNotificationsByType(type) {
   const notifications = await fetchAllNotifications();
 
   const filtered = notifications
-    .filter((n) => n.Type?.toLowerCase() === type.toLowerCase())
-    .sort((a, b) => parseTimestamp(b.Timestamp) - parseTimestamp(a.Timestamp));
+    .filter((n) => normalizeType(n.Type) === normalizeType(type))
+    .sort((a, b) => newestFirst(a, b));
 
   console.log(
     `[NotificationService] Filtered by type "${type}": ${filtered.length} results.`
@@ -192,8 +169,8 @@ async function getNotificationsByType(type) {
 async function getLatestNotifications() {
   const notifications = await fetchAllNotifications();
 
-  const sorted = notifications.sort(
-    (a, b) => parseTimestamp(b.Timestamp) - parseTimestamp(a.Timestamp)
+  const sorted = [...notifications].sort(
+    (a, b) => newestFirst(a, b)
   );
 
   return sorted.slice(0, 5);
